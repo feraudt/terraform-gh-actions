@@ -20,11 +20,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       
+      - name: List terraform directory
+        run: cd ./terraform && ls -a
+      
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-      
-      - name: List directory
-        run: ls -a
       
       - name: Terraform init
         run: terraform init
