@@ -1,0 +1,41 @@
+name: Terraform provisioning on push
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{secrets.TF_ARM_CLIENT_ID}}
+      ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
+      ARM_SUBSCRIPTION_ID: ${{secrets.AZ_SUBID}}
+      ARM_TENANT_ID: ${{secrets.AZ_TENANTID}}
+      ARM_ACCESS_KEY: ${{secrets.TF_ARM_ACCESS_KEY}}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+      
+      - name: List directory
+        run: ls -a
+      
+      - name: Terraform init
+        run: terraform init
+      
+      - name: Terraform format
+        run: terraform fmt
+      
+      - name: Terraform plan
+        run: terraform plan
+      
+      - name: Terraform apply
+        run: terraform apply -auto-approve
+
+
