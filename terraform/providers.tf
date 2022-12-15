@@ -7,10 +7,10 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name = "feraudt-student-works"
+    resource_group_name  = "feraudt-student-works"
     storage_account_name = "feraudtazrepo"
-    container_name = "terraform-state"
-    key = "terraform.tfstate"
+    container_name       = "terraform-state"
+    key                  = "terraform.tfstate"
   }
 }
 

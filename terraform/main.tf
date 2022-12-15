@@ -4,11 +4,11 @@ data "azurerm_resource_group" "host_rg" {
 }
 
 resource "azurerm_kubernetes_cluster" "k8s" {
-  location            = data.azurerm_resource_group.host_rg
+  location            = data.azurerm_resource_group.host_rg.location
   name                = var.cluster_name
   resource_group_name = data.azurerm_resource_group.host_rg.name
   dns_prefix          = var.cluster_name
-  tags                = {
+  tags = {
     Environment = var.environment
   }
 

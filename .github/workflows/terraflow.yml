@@ -47,4 +47,3 @@ jobs:
         id: apply
         run: terraform apply -auto-approve -var aks_sp_client_id=${{secrets.TF_ARM_CLIENT_ID}} -var aks_sp_client_secret=${{secrets.TF_ARM_CLIENT_SECRET}}
 
-

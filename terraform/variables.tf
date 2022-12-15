@@ -1,54 +1,54 @@
 # Define resources location
 variable "location" {
   description = "Location of the managed resources"
-  type = string
-  default = "francecentral"
+  type        = string
+  default     = "francecentral"
 }
 
 # Name of the existing resource group to create resources within
 variable "resource_group_name" {
   description = "Name of the existing resource group to create resources within"
-  type = string
-  default = "feraudt-student-works"
+  type        = string
+  default     = "feraudt-student-works"
 }
 
 # Cluster name
 variable "cluster_name" {
   description = "Cluster name"
-  type = string
-  default = "wordpress-polyconseil"
+  type        = string
+  default     = "wordpress-polyconseil"
 }
 
 # Cluster environment tag
 variable "environment" {
   description = "Cluster environment tag"
-  type = string
-  default = "Staging"
+  type        = string
+  default     = "Staging"
 }
 
 # VM size target for K8s cluster
 variable "vm_size" {
   description = "VM size target for K8s cluster"
-  type = string
-  default = "Standard_K8S2_v1"
+  type        = string
+  default     = "Standard_A4_v2"
 }
 
 # Number of nodes within the cluster
 variable "agent_count" {
   description = "Number of nodes within the cluster"
-  type = number
-  default = 1
+  type        = number
+  default     = 1
 }
 
 # The following two variable declarations are placeholder references.
 # Set the values for these variable in terraform.tfvars or with the -var option
 variable "aks_sp_client_id" {
-  default = ""
+  default   = ""
   sensitive = true
 }
 
 variable "aks_sp_client_secret" {
-  default = ""
+  default   = ""
   sensitive = true
 }
 
