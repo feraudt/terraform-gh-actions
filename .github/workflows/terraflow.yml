@@ -7,6 +7,7 @@ on:
 
 jobs:
   terraform:
+    name: "Terraform"
     runs-on: ubuntu-latest
 
     env:
@@ -15,27 +16,35 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{secrets.AZ_SUBID}}
       ARM_TENANT_ID: ${{secrets.AZ_TENANTID}}
       ARM_ACCESS_KEY: ${{secrets.TF_ARM_ACCESS_KEY}}
-    
+
+    defaults:
+      run:
+        working-directory: terraform
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       
-      - name: List terraform directory
-        run: cd ./terraform && ls -a
-      
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
       
+      - name: List terraform directory
+        run: pwd &&  ls -a
+      
       - name: Terraform init
+        id: init
         run: terraform init
       
-      - name: Terraform format
-        run: terraform fmt
+      - name: Terraform check
+        id: validate
+        run: terraform validate
       
       - name: Terraform plan
-        run: terraform plan
+        id: plan
+        run: terraform plan -var aks_sp_client_id=${{secrets.TF_ARM_CLIENT_ID}} -var aks_sp_client_secret=${{secrets.TF_ARM_CLIENT_SECRET}}
       
       - name: Terraform apply
-        run: terraform apply -auto-approve
+        id: apply
+        run: terraform apply -auto-approve -var aks_sp_client_id=${{secrets.TF_ARM_CLIENT_ID}} -var aks_sp_client_secret=${{secrets.TF_ARM_CLIENT_SECRET}}
 
 

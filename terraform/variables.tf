@@ -41,12 +41,13 @@ variable "agent_count" {
 }
 
 # The following two variable declarations are placeholder references.
-# Set the values for these variable in terraform.tfvars
-variable "aks_service_principal_app_id" {
+# Set the values for these variable in terraform.tfvars or with the -var option
+variable "aks_sp_client_id" {
   default = ""
+  sensitive = true
 }
 
-variable "aks_service_principal_client_secret" {
+variable "aks_sp_client_secret" {
   default = ""
   sensitive = true
 }

@@ -29,7 +29,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     load_balancer_sku = "standard"
   }
   service_principal {
-    client_id     = var.ARM_CLIENT_ID
-    client_secret = var.ARM_CLIENT_SECRET
+    client_id     = var.aks_sp_client_id
+    client_secret = var.aks_sp_client_secret
   }
 }
