@@ -1,8 +1,36 @@
-# Azure resource group
+# Get existing Azure resource group
 data "azurerm_resource_group" "host_rg" {
   name = var.resource_group_name
 }
 
+# Create MySQL server
+resource "azurerm_mysql_server" "mysql_server_wp" {
+  name                = var.mysql_server_name
+  location            = data.azurerm_resource_group.host_rg.location
+  resource_group_name = data.azurerm_resource_group.host_rg.name
+
+  administrator_login          = var.mysql_admin_user
+  administrator_login_password = var.mysql_admin_password
+
+  sku_name   = var.mysql_vm_size
+  storage_mb = var.mysql_storage
+  version    = var.mysql_version
+
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
+  ssl_enforcement_enabled      = true
+}
+
+# Create MySQL database
+resource "azurerm_mysql_database" "mysql_db_wp" {
+  name                = var.mysql_db_name
+  resource_group_name = azurerm_mysql_server.mysql_server_wp.resource_group_name
+  server_name         = azurerm_mysql_server.mysql_server_wp.name
+  charset             = "utf8"
+  collation           = "utf8_unicode_ci"
+}
+
+# Create AKS cluster
 resource "azurerm_kubernetes_cluster" "k8s" {
   location            = data.azurerm_resource_group.host_rg.location
   name                = var.cluster_name
@@ -29,7 +57,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     load_balancer_sku = "standard"
   }
   service_principal {
-    client_id     = var.aks_sp_client_id
-    client_secret = var.aks_sp_client_secret
+    client_id     = var.arm_client_id
+    client_secret = var.arm_client_secret
   }
 }

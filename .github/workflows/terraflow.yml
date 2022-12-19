@@ -1,9 +1,12 @@
-name: Terraform provisioning on push
+name: Terraform provisioning
 
 on:
   push:
     branches:
       - "main"
+  release:
+    types:
+      - "published"
 
 jobs:
   terraform:
@@ -41,9 +44,9 @@ jobs:
       
       - name: Terraform plan
         id: plan
-        run: terraform plan -var aks_sp_client_id=${{secrets.TF_ARM_CLIENT_ID}} -var aks_sp_client_secret=${{secrets.TF_ARM_CLIENT_SECRET}}
+        run: terraform plan -var aks_sp_client_id=${{secrets.TF_ARM_CLIENT_ID}} -var aks_sp_client_secret=${{secrets.TF_ARM_CLIENT_SECRET}} -var mysql_admin_user=${{secrets.MYSQL_USER}} -var mysql_admin_password=${{secrets.MYSQL_PASS}}
       
       - name: Terraform apply
+        if: github.event_name == 'release'
         id: apply
-        run: terraform apply -auto-approve -var aks_sp_client_id=${{secrets.TF_ARM_CLIENT_ID}} -var aks_sp_client_secret=${{secrets.TF_ARM_CLIENT_SECRET}}
-
+        run: terraform apply -auto-approve -var aks_sp_client_id=${{secrets.TF_ARM_CLIENT_ID}} -var aks_sp_client_secret=${{secrets.TF_ARM_CLIENT_SECRET}} -var mysql_admin_user=${{secrets.MYSQL_USER}} -var mysql_admin_password=${{secrets.MYSQL_PASS}}

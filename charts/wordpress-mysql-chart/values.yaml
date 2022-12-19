@@ -1,0 +1,33 @@
+# Default values for wordpress-mysql-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets: []
+name: wordpress
+fullnameOverride: ""
+
+wordpress:
+  image:
+    repository: wordpress
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "6.1.1-apache"
+  pvc:
+    accessMode: ReadWriteOnce
+    storage: 1Gi
+  replicaCount: 3
+  autoscaling:
+    enabled: false
+    minReplicas: 3
+    maxReplicas: 9
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  volume:
+    name: wordpress-persistent-storage
+    mountPath: /var/www/html
+
+mysql:
+  host: mysql-server-wp-feraudt.mysql.database.azure.com
+  name: mysql-db-wp-feraudt
+
+mysqlAdminUserBase64: ""
+mysqlAdminPassBase64: ""

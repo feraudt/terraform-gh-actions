@@ -1,3 +1,23 @@
+output "mysql_server_id" {
+  value = azurerm_mysql_server.mysql_server_wp.id
+}
+
+output "mysql_server_fqdn" {
+  value = azurerm_mysql_server.mysql_server_wp.fqdn
+}
+
+output "mysql_server_name" {
+  value = azurerm_mysql_server.mysql_server_wp.name
+}
+
+output "mysql_db_id" {
+  value = azurerm_mysql_database.mysql_db_wp.id
+}
+
+output "mysql_db_name" {
+  value = azurerm_mysql_database.mysql_db_wp.name
+}
+
 output "client_certificate" {
   value     = azurerm_kubernetes_cluster.k8s.kube_config[0].client_certificate
   sensitive = true

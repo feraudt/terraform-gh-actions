@@ -12,11 +12,46 @@ variable "resource_group_name" {
   default     = "feraudt-student-works"
 }
 
+# Name of mysql server
+variable "mysql_server_name" {
+  description = "Name of mysql server"
+  type        = string
+  default     = "mysql-server-wp-feraudt"
+}
+
+# VM size target for mysql server
+variable "mysql_vm_size" {
+  description = "VM size target for mysql server"
+  type        = string
+  default     = "B_Gen5_2"
+}
+
+# Storage capacity for mysql server
+variable "mysql_storage" {
+  description = "Storage capacity for mysql server"
+  type        = string
+  default     = 5120
+}
+
+# Version for mysql server
+variable "mysql_version" {
+  description = "Version for mysql server"
+  type        = string
+  default     = "5.7"
+}
+
+# Name of mysql database
+variable "mysql_db_name" {
+  description = "Name of mysql database"
+  type        = string
+  default     = "mysql-db-wp-feraudt"
+}
+
 # Cluster name
 variable "cluster_name" {
   description = "Cluster name"
   type        = string
-  default     = "wordpress-polyconseil"
+  default     = "wordpress-polyconseil-feraudt"
 }
 
 # Cluster environment tag
@@ -40,14 +75,23 @@ variable "agent_count" {
   default     = 1
 }
 
-# The following two variable declarations are placeholder references.
+# The following variables declarations are placeholder references.
 # Set the values for these variable in terraform.tfvars or with the -var option
-variable "aks_sp_client_id" {
+variable "arm_client_id" {
   default   = ""
   sensitive = true
 }
 
-variable "aks_sp_client_secret" {
+variable "arm_client_secret" {
+  default   = ""
+  sensitive = true
+}
+variable "mysql_admin_user" {
+  default   = ""
+  sensitive = true
+}
+
+variable "mysql_admin_password" {
   default   = ""
   sensitive = true
 }

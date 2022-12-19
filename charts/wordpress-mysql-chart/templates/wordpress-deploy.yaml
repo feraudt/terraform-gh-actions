@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wordpress-mysql-chart.loadbalancerName" . }}
+  labels:
+    {{- include "wordpress-mysql-chart.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "wordpress-mysql-chart.wpSelectorLabels" . | nindent 4 }}
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "wordpress-mysql-chart.wpPvclaimName" . }}
+  labels:
+    {{- include "wordpress-mysql-chart.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.wordpress.pvc.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.wordpress.pvc.storage }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "wordpress-mysql-chart.fullname" . }}
+  labels:
+    {{- include "wordpress-mysql-chart.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.wordpress.autoscaling.enabled }}
+  replicas: {{ .Values.wordpress.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "wordpress-mysql-chart.wpSelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "wordpress-mysql-chart.wpSelectorLabels" . | nindent 8 }}
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - image: "{{ .Values.wordpress.image.repository }}:{{ .Values.wordpress.image.tag }}"
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_NAME
+          value: {{ .Values.mysql.name | quote }}
+        - name: WORDPRESS_DB_HOST
+          value: {{ .Values.mysql.host | quote }}
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-auth-secret
+              key: user
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-auth-secret
+              key: password
+        ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+        volumeMounts:
+        - name: {{ .Values.wordpress.volume.name }}
+          mountPath: {{ .Values.wordpress.volume.mountPath | quote }}
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 250m
+          limits:
+            memory: 512Mi
+            cpu: 1000m
+      volumes:
+      - name: {{ .Values.wordpress.volume.name }}
+        persistentVolumeClaim:
+          claimName: {{ include "wordpress-mysql-chart.wpPvclaimName" . }}
