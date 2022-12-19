@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  wordpress-mysql-chart:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-12-19T12:30:20.91856626Z"
+    description: A Helm chart for Wordpress deployment on Kubernetes with MySQL database
+    digest: 78b140bfea2a63a7d97639d2c4e8f240e77c2a466827ea0ac55fa93372bd7568
+    name: wordpress-mysql-chart
+    type: application
+    urls:
+    - https://github.com/feraudt/terraform-gh-actions/releases/download/wordpress-mysql-chart-1.0.0/wordpress-mysql-chart-1.0.0.tgz
+    version: 1.0.0
+generated: "2022-12-19T12:30:20.706767619Z"
