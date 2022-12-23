@@ -37,3 +37,6 @@ override.tf.json
 # Helm releases index
 *index.yaml
 *index.yml
+
+# Helm packaged charts
+*.tgz
